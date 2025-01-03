@@ -43,5 +43,5 @@ jobs:
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
-          -F "file=@./build/app/outputs/flutter-apk/app-release.apk.sha1" \
-          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.release_id }}/assets?name=app-release.apk.sha1"
+          -F "file=@./pubspec.yaml" \
+          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.release_id }}/assets?name=pubspec.yaml"
