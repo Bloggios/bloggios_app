@@ -17,11 +17,11 @@ jobs:
         with:
           flutter-version: '3.27.1'
 
-      - name: Install Dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk --release
+#      - name: Install Dependencies
+#        run: flutter pub get
+#
+#      - name: Build APK
+#        run: flutter build apk --release
 
       - name: Create GitHub Release
         id: create_release
@@ -40,5 +40,5 @@ jobs:
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
-          -F "file=@./build/app/outputs/flutter-apk/app-release.apk" \
-          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.release_id }}/assets?name=app-release.apk"
+          -F "file=@./build/app/outputs/flutter-apk/app-release.apk.sha1" \
+          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.release_id }}/assets?name=app-release.apk.sha1"
