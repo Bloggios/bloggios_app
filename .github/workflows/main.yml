@@ -21,7 +21,7 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --releasegi
+        run: flutter build apk --release
 
       - name: Upload APK to GitHub Packages
         env:
