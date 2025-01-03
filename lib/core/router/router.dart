@@ -8,6 +8,7 @@
 import 'package:bloggios_app/core/models/routes.dart';
 import 'package:bloggios_app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:bloggios_app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter initRouter(String initialRoute) {
@@ -17,13 +18,47 @@ GoRouter initRouter(String initialRoute) {
       GoRoute(
         path: Routes.splash.path,
         name: Routes.splash.name,
-        builder: (context, state) => const SplashPage(),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const SplashPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 1),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                ),
+              );
+            },
+          );
+        },
       ),
       GoRoute(
         path: Routes.onboarding.path,
         name: Routes.onboarding.name,
-        builder: (context, state) => const OnboardingPage(),
-      )
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const OnboardingPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 1),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                ),
+              );
+            },
+          );
+        },
+      ),
     ],
   );
 }

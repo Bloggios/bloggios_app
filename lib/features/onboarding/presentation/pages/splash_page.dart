@@ -5,8 +5,10 @@
   File: splash_page
  */
 
+import 'package:bloggios_app/core/models/routes.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -57,13 +59,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       ),
     ]).animate(_controller);
 
-    // Color spreading animation controller
     _colorController = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
     );
 
-    // Zoom animation controller
     _zoomAnimation = Tween<double>(begin: 1, end: 0.8).animate(
       CurvedAnimation(
         parent: _colorController,
@@ -71,13 +71,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       ),
     );
 
-    // Text slide-up animation controller
     _textAnimationController = AnimationController(
       duration: const Duration(milliseconds: 700),
       vsync: this,
     );
 
-    // Slide-up animation for the text widget
     _textSlideAnimation = Tween<Offset>(
       begin: Offset(0, 2), // Start 160px below
       end: Offset(0, 0), // End at normal position
@@ -95,14 +93,37 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       ),
     );
 
-    // Start the rotation animation
     _controller.forward().whenComplete(() {
       setState(() {
         _isRotationComplete = true;
       });
       _colorController
-          .forward(); // Start the color spreading animation after rotation
+          .forward();
       _textAnimationController.forward();
+    });
+
+    _colorController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        if (_textAnimationController.isCompleted) {
+          Future.delayed(const Duration(milliseconds: 200), () {
+            if (mounted) {
+              context.pushReplacement(Routes.onboarding.path);
+            }
+          });
+        }
+      }
+    });
+
+    _textAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        if (_colorController.isCompleted) {
+          Future.delayed(const Duration(milliseconds: 200), () {
+            if (mounted) {
+              context.pushReplacement(Routes.onboarding.path);
+            }
+          });
+        }
+      }
     });
   }
 
@@ -124,7 +145,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
             if (_isRotationComplete) {
               return Stack(
                 children: [
-                  // Radial color spreading with shape transition (circle to rectangle)
                   AnimatedBuilder(
                     animation: _colorController,
                     builder: (context, child) {
@@ -153,7 +173,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                       );
                     },
                   ),
-                  // Image with zoom-out effect
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,7 +211,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                 ],
               );
             } else {
-              // Rotation animation
               return Transform.rotate(
                 angle: _animation.value * (3.14159265359 / 180),
                 child: Image.asset(

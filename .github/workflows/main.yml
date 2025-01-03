@@ -1,0 +1,36 @@
+name: Flutter Build and Upload APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.1'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --releasegi
+
+      - name: Upload APK to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p ./build/app/outputs/flutter-apk
+          echo "Uploading APK to GitHub Packages..."
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -F "file=@./build/app/outputs/flutter-apk/app-release.apk" \
+            "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.run_id }}/assets?name=app-release.apk"
