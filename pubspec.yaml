@@ -29,6 +29,7 @@ dependencies:
   google_sign_in: ^6.2.2
   flutter_facebook_auth: ^7.1.1
   loader_overlay: ^5.0.0
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:
@@ -129,3 +130,18 @@ flutter:
         - asset: assets/fonts/nunito/Nunito-ExtraLightItalic.ttf
           weight: 200
           style: italic
+
+flutter_native_splash:
+  color: "#5464ff" # Background color
+  image: assets/images/bloggios_logo.png
+  android: true # Include Android platform
+  ios: true # Include iOS platform
+  web: false # Exclude web
+  android_gravity: center # Center logo on Android
+  ios_content_mode: center # Center logo on iOS
+  image_ios: assets/images/bloggios_logo_white.png
+  image_dark_ios: assets/images/bloggios_logo_white.png
+  android_12:
+    color: "#5464ff" # Background color
+    icon_background_color: "#000000"
+    icon_background_color_dark: "#000000"
