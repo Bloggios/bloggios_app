@@ -1,47 +1,47 @@
-name: Flutter Build and Upload APK
-
-on:
-  push:
-    branches:
-      - main
-
-permissions:
-  contents: write
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.27.1'
-
-      - name: Install Dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk
-
-      - name: Create GitHub Release
-        id: create_release
-        run: |
-          release_response=$(curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          -d '{"tag_name": "v1.0-DEV", "name": "Release v1.0-DEV", "body": "Release notes for v1.0-DEV"}' \
-          "https://api.github.com/repos/${{ github.repository }}/releases")
-          echo "Release created: $release_response"
-          echo "::set-output name=release_id::$(echo $release_response | jq -r .id)"
-            
-            # Step 6: Upload APK to GitHub Release
-      - name: Upload APK to GitHub Release
-        run: |
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          -F "file=@./build/app/outputs/flutter-apk/app-release.apk" \
-          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.release_id }}/assets?name=app-release.apk"
+#name: Flutter Build and Upload APK
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#
+#permissions:
+#  contents: write
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v3
+#
+#      - name: Set up Flutter
+#        uses: subosito/flutter-action@v2
+#        with:
+#          flutter-version: '3.27.1'
+#
+#      - name: Install Dependencies
+#        run: flutter pub get
+#
+#      - name: Build APK
+#        run: flutter build apk
+#
+#      - name: Create GitHub Release
+#        id: create_release
+#        run: |
+#          release_response=$(curl -X POST \
+#          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#          -H "Accept: application/vnd.github.v3+json" \
+#          -d '{"tag_name": "v1.0-DEV", "name": "Release v1.0-DEV", "body": "Release notes for v1.0-DEV"}' \
+#          "https://api.github.com/repos/${{ github.repository }}/releases")
+#          echo "Release created: $release_response"
+#          echo "::set-output name=release_id::$(echo $release_response | jq -r .id)"
+#
+#            # Step 6: Upload APK to GitHub Release
+#      - name: Upload APK to GitHub Release
+#        run: |
+#          curl -X POST \
+#          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#          -H "Accept: application/vnd.github.v3+json" \
+#          -F "file=@./build/app/outputs/flutter-apk/app-release.apk" \
+#          "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.release_id }}/assets?name=app-release.apk"

@@ -97,8 +97,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       setState(() {
         _isRotationComplete = true;
       });
-      _colorController
-          .forward();
+      _colorController.forward();
       _textAnimationController.forward();
     });
 
@@ -215,7 +214,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                 angle: _animation.value * (3.14159265359 / 180),
                 child: Image.asset(
                   'assets/images/bloggios_logo_square-250.png',
-                  width: 140,
+                  width: 120,
                 ),
               );
             }
