@@ -40,7 +40,7 @@ android {
         release {
             keyAlias = 'Bloggios'
             keyPassword = 'Qwerty@bloggios@99825'
-            storeFile = file("$rootDir/upload-keystore.jks")
+            storeFile = file("/home/runner/work/bloggios_app/bloggios_app/upload-keystore.jks")
             storePassword = keystoreProperties['storePassword']
         }
     }
