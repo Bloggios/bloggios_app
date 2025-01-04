@@ -38,9 +38,9 @@ android {
 
     signingConfigs {
         release {
-            keyAlias = keystoreProperties['keyAlias']
-            keyPassword = keystoreProperties['keyPassword']
-            storeFile = keystoreProperties['storeFile'] ? file("$rootDir/" + keystoreProperties['storeFile']) : null
+            keyAlias = 'Bloggios'
+            keyPassword = 'Qwerty@bloggios@99825'
+            storeFile = file("$rootDir/upload-keystore.jks")
             storePassword = keystoreProperties['storePassword']
         }
     }
