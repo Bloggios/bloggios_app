@@ -9,7 +9,7 @@ import 'package:bloggios_app/core/constants/assets_constants.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:bloggios_app/core/utils/dimensions.dart';
 import 'package:bloggios_app/core/widgets/powered_by.dart';
-import 'package:bloggios_app/features/onboarding/presentation/widgets/get_started_button.dart';
+import 'package:bloggios_app/features/onboarding/view/widgets/get_started_button.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {

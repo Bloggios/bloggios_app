@@ -5,8 +5,11 @@
   File: get_started_button
  */
 
+import 'package:bloggios_app/core/router/routes.dart';
+import 'package:bloggios_app/core/storage/secured_storage.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class GetStartedButton extends StatefulWidget {
   const GetStartedButton({super.key});
@@ -55,7 +58,8 @@ class _GetStartedButtonState extends State<GetStartedButton> with SingleTickerPr
         enableFeedback: true
       ),
       onPressed: () {
-        print('Button Pressed');
+        SecuredStorage.storeIsOnboardingVisited();
+        context.pushReplacement(Routes.authentication.path);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

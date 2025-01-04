@@ -5,10 +5,12 @@
   File: splash_page
  */
 
-import 'package:bloggios_app/core/models/routes.dart';
+import 'package:bloggios_app/core/router/routes.dart';
+import 'package:bloggios_app/core/storage/secured_storage.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -26,10 +28,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   late Animation<Offset> _textSlideAnimation;
   late Animation<double> _textScaleAnimation;
   bool _isRotationComplete = false;
+  bool _isLoading = false;
+  bool _isApiFetched = false;
 
   @override
   void initState() {
     super.initState();
+
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2000),
@@ -93,36 +98,61 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       ),
     );
 
-    _controller.forward().whenComplete(() {
+    initTasks();
+  }
+
+  Future<void> initTasks() async {
+    final apiFetch = initLogics().whenComplete(() {
+      setState(() {
+        _isApiFetched = true;
+      });
+    },);
+    final animations = initAnimations();
+    await Future.wait([apiFetch, animations]);
+    String path = await apiFetch;
+    if (mounted) {
+      _colorController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          Future.delayed(const Duration(milliseconds: 200), () {
+            if (mounted) {
+              context.pushReplacement(path);
+            }
+          });
+        }
+      });
+
+      if (_colorController.isCompleted) {
+        context.pushReplacement(path);
+      }
+    }
+  }
+
+  Future<String> initLogics() async {
+    final routePath = await determineInitialRoute();
+    return routePath;
+  }
+
+  Future<String> determineInitialRoute() async {
+    final isOnboardingVisited = await SecuredStorage.retrieveIsOnboardingVisited();
+    if (isOnboardingVisited != null && isOnboardingVisited == 'true') {
+      return Routes.authentication.path;
+    }
+    return Routes.onboarding.path;
+  }
+
+  Future<void> initAnimations() async {
+    await _controller.forward().whenComplete(() {
       setState(() {
         _isRotationComplete = true;
       });
-      _colorController.forward();
+      _colorController.forward().whenComplete(() {
+        Future.delayed(Duration(milliseconds: 200), () {
+          setState(() {
+            _isLoading = true;
+          });
+        });
+      });
       _textAnimationController.forward();
-    });
-
-    _colorController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        if (_textAnimationController.isCompleted) {
-          Future.delayed(const Duration(milliseconds: 200), () {
-            if (mounted) {
-              context.pushReplacement(Routes.onboarding.path);
-            }
-          });
-        }
-      }
-    });
-
-    _textAnimationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        if (_colorController.isCompleted) {
-          Future.delayed(const Duration(milliseconds: 200), () {
-            if (mounted) {
-              context.pushReplacement(Routes.onboarding.path);
-            }
-          });
-        }
-      }
     });
   }
 
@@ -206,7 +236,27 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                    AnimatedOpacity(
+                      duration: Duration(milliseconds: 400),
+                      opacity: _isLoading && !_isApiFetched ? 1.0 : 0.0,
+                      child: Container(
+                        color: Colors.black.withOpacity(0.7),
+                        child: Stack(
+                            children: [
+                              Positioned(
+                                bottom: 100,
+                                left: 0,
+                                right: 0,
+                                child: LoadingAnimationWidget.fourRotatingDots(
+                                  color: AppPallete.whiteColor,
+                                  size: 40,
+                                ),
+                              )
+                            ],
+                        ),
+                      ),
+                    )
                 ],
               );
             } else {
