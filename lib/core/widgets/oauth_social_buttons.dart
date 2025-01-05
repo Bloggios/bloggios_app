@@ -11,13 +11,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class OauthSocialButtons extends StatelessWidget {
-  final GoogleSignIn googleSignIn =
-      GoogleSignIn(signInOption: SignInOption.standard);
 
-  OauthSocialButtons({super.key});
+  const OauthSocialButtons({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final GoogleSignIn googleSignIn = GoogleSignIn(signInOption: SignInOption.standard);
+
     return Container(
       constraints: BoxConstraints(minWidth: 330),
       child: Row(
@@ -70,40 +71,5 @@ class OauthSocialButtons extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<void> loginWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-
-      if (googleUser == null) {
-        print("User canceled the login");
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      print('Access Token: ${googleAuth.accessToken}');
-      print("User signed in: ${googleUser.displayName}");
-    } catch (error) {
-      print("Error signing in with Google: $error");
-    }
-  }
-
-  Future<void> _loginWithFacebook() async {
-    try {
-      final LoginResult result = await FacebookAuth.instance.login();
-
-      if (result.status == LoginStatus.success) {
-        // Get user data
-        final userData = await FacebookAuth.instance.getUserData();
-        print(userData.entries.toString());
-      } else {
-        print(result.status);
-        print(result.message);
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 }

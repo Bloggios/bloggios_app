@@ -5,6 +5,7 @@
   File: login_form
  */
 
+import 'package:bloggios_app/core/constants/application_constants.dart';
 import 'package:bloggios_app/core/widgets/oauth_social_buttons.dart';
 import 'package:bloggios_app/core/widgets/text_divider.dart';
 import 'package:bloggios_app/features/authentication/utils/auth_validators.dart';
@@ -14,67 +15,88 @@ import 'package:bloggios_app/features/authentication/view/widgets/auth_text_fiel
 import 'package:bloggios_app/features/authentication/view/widgets/form_header.dart';
 import 'package:flutter/material.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
   final _loginFormKey = GlobalKey<FormState>();
   final _entryPointController = TextEditingController();
   final _passwordController = TextEditingController();
+  static const double _formSpacing = 20.0;
+  static const double _buttonSpacing = 10.0;
 
-  LoginForm({super.key});
+  @override
+  void dispose() {
+    _entryPointController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _onLogin() {
+    if (_loginFormKey.currentState!.validate()) {
+      print('Login button pressed');
+    }
+  }
+
+  void _onForgotPassword() {
+    print('Forgot Password button pressed');
+  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
-        child: Column(
-          spacing: 20,
-          children: [
-            FormHeader(
-              title: 'Welcome Back',
-              description:
-                  'Sign in to continue exploring, managing your preferences, and enjoying a tailored experience.',
-            ),
-            Form(
-              key: _loginFormKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  AuthTextField(
-                    textEditingController: _entryPointController,
-                    validator: validateEntrypoint,
-                  ),
-                  const SizedBox(height: 30),
-                  AuthPasswordField(
-                    textEditingController: _passwordController,
-                  ),
-                  const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        // Implement forgot password functionality
-                      },
-                      child: const Text('Forgot Password?'),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  AuthButton(
-                    text: 'Login',
-                    onPress: () {
-                      if (_loginFormKey.currentState!.validate()) {
-                        print('pressed');
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  const TextDivider(text: 'Or Login with'),
-                  const SizedBox(height: 20),
-                  OauthSocialButtons(),
-                ],
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+          constraints: BoxConstraints(maxWidth: ApplicationConstants.maxWidth),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const FormHeader(
+                title: 'Welcome Back',
+                description:
+                'Sign in to continue exploring, managing your preferences, and enjoying a tailored experience.',
               ),
-            )
-          ],
+              Form(
+                key: _loginFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: _formSpacing),
+                    AuthTextField(
+                      textEditingController: _entryPointController,
+                      validator: validateEntrypoint,
+                    ),
+                    const SizedBox(height: _formSpacing + 10),
+                    AuthPasswordField(
+                      textEditingController: _passwordController,
+                    ),
+                    const SizedBox(height: _buttonSpacing),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: _onForgotPassword,
+                        child: const Text('Forgot Password?'),
+                      ),
+                    ),
+                    const SizedBox(height: _buttonSpacing),
+                    AuthButton(
+                      text: 'Login',
+                      onPress: _onLogin,
+                    ),
+                    const SizedBox(height: _formSpacing),
+                    const TextDivider(text: 'Or Login with'),
+                    const SizedBox(height: _formSpacing),
+                    const OauthSocialButtons(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

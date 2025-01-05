@@ -13,7 +13,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await initDependencies();
   final GoRouter router = initRouter(Routes.splash.path);
-  //await serviceLocator<FlutterSecureStorage>().deleteAll();
+  await serviceLocator<FlutterSecureStorage>().deleteAll();
   final data = await serviceLocator<FlutterSecureStorage>().readAll();
   debugPrint(data.toString());
   runApp(MyApp(router));

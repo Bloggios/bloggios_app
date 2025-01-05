@@ -52,6 +52,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                constraints: const BoxConstraints(maxWidth: 400),
                 height: 54,
                 width: double.infinity,
                 padding: EdgeInsets.all(6),
