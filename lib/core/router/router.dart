@@ -7,6 +7,7 @@
 
 import 'package:bloggios_app/core/router/routes.dart';
 import 'package:bloggios_app/features/authentication/view/pages/authentication_page.dart';
+import 'package:bloggios_app/features/authentication/view/pages/test_page.dart';
 import 'package:bloggios_app/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:bloggios_app/features/onboarding/view/pages/splash_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,7 +67,7 @@ GoRouter initRouter(String initialRoute) {
         pageBuilder: (context, state) {
           return CustomTransitionPage(
             key: state.pageKey,
-            child: const AuthenticationPage(),
+            child: const TestPage(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               const begin = Offset(1.0, 0.0);
               const end = Offset.zero;
