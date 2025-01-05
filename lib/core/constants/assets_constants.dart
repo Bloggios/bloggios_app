@@ -11,4 +11,6 @@ class AssetsConstants {
   static const String authenticationImage = 'assets/images/radiant-gradient.png';
 
   static const String bloggiosWhiteLogo = 'assets/images/bloggios_logo_white.png';
+
+  static const String bloggiosLogo = 'assets/images/bloggios_logo.png';
 }
