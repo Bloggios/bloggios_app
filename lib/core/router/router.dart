@@ -13,9 +13,9 @@ import 'package:bloggios_app/features/onboarding/view/pages/splash_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
-GoRouter initRouter(String initialRoute) {
+GoRouter initRouter() {
   return GoRouter(
-    initialLocation: initialRoute,
+    initialLocation: Routes.splash.path,
     routes: [
       GoRoute(
         path: Routes.splash.path,
