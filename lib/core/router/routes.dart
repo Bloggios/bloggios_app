@@ -11,5 +11,5 @@ class Routes {
   static AppRoute splash = AppRoute(name: 'splash', path: '/splash');
   static AppRoute onboarding = AppRoute(name: 'onboarding', path: '/onboarding');
   static AppRoute authentication = AppRoute(name: 'authentication', path: '/authentication');
-  static AppRoute registerUser = AppRoute(name: 'registerUser', path: '/register-user');
+  static AppRoute homePage = AppRoute(name: 'home', path: '/home');
 }

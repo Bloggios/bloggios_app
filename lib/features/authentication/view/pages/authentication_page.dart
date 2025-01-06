@@ -91,14 +91,19 @@ class _AuthenticationPageState extends State<AuthenticationPage>
           ),
         ),
       ),
-      body: SafeArea(
-        child: TabBarView(
-          controller: _tabController,
-          children: [
-            LoginForm(),
-            SignupForm(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                LoginForm(),
+                SignupForm(),
+              ],
+            ),
+          ),
+
+        ],
       ),
     );
   }
