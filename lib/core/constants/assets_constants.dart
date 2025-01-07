@@ -13,4 +13,6 @@ class AssetsConstants {
   static const String bloggiosWhiteLogo = 'assets/images/bloggios_logo_white.png';
 
   static const String bloggiosLogo = 'assets/images/bloggios_logo.png';
+
+  static const String otpShieldLottie = 'assets/lottie/otp_shield.json';
 }

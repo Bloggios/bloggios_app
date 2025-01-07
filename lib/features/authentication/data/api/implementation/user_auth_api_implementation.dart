@@ -7,6 +7,7 @@
 
 import 'dart:convert';
 
+import 'package:bloggios_app/core/beans/init_dependencies.dart';
 import 'package:bloggios_app/core/constants/api_constants.dart';
 import 'package:bloggios_app/core/exception/bloggios_exception.dart';
 import 'package:bloggios_app/core/models/api_info.dart';
@@ -17,9 +18,13 @@ import 'package:bloggios_app/features/authentication/data/api/auth_api.dart';
 import 'package:bloggios_app/features/authentication/data/api/implementation/auth_api_implementation.dart';
 import 'package:bloggios_app/features/authentication/data/api/user_auth_api.dart';
 import 'package:bloggios_app/features/authentication/utils/client_utils.dart';
+import 'package:bloggios_app/features/authentication/view/bloc/auth_bloc.dart';
 import 'package:http/http.dart' as http;
 
 class UserAuthApiImplementation implements UserAuthApi {
+
+  final authBloc = serviceLocator<AuthBloc>();
+
   @override
   Future<RegisterResponse> registerUser(
       {required String email, required String password}) async {
@@ -164,7 +169,8 @@ class UserAuthApiImplementation implements UserAuthApi {
 
         if (response.statusCode == authenticateOtp.successCode) {
           AuthApi authApi = AuthApiImplementation();
-          await authApi.authenticateUser(email: email, password: password);
+          final authResponse = await authApi.authenticateUser(email: email, password: password);
+          authBloc.add(AuthRefreshTokenUpdate(authResponse));
           ModuleResponse moduleResponse = ModuleResponse(
             userId: responseData['userId'],
             message: responseData['message'],

@@ -41,8 +41,8 @@ class AuthButton extends StatelessWidget {
           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
         ),
       )
-          : const Text(
-        'Login',
+          : Text(
+        text,
         style: TextStyle(
           fontFamily: 'Inter',
           color: Colors.white,

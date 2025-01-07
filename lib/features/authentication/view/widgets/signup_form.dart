@@ -8,6 +8,7 @@
 import 'package:bloggios_app/core/widgets/oauth_social_buttons.dart';
 import 'package:bloggios_app/core/widgets/text_divider.dart';
 import 'package:bloggios_app/features/authentication/utils/auth_validators.dart';
+import 'package:bloggios_app/features/authentication/utils/signup_page_bloc_listener.dart';
 import 'package:bloggios_app/features/authentication/view/bloc/user_auth_bloc.dart';
 import 'package:bloggios_app/features/authentication/view/widgets/auth_button.dart';
 import 'package:bloggios_app/features/authentication/view/widgets/auth_password_field.dart';
@@ -51,7 +52,8 @@ class _SignupFormState extends State<SignupForm> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: BlocBuilder<UserAuthBloc, UserAuthState>(
+      child: BlocConsumer<UserAuthBloc, UserAuthState>(
+        listener: signUpPageBlocListener,
         builder: (context, state) {
           final bool isLoading = state is UserAuthLoading;
           return Center(

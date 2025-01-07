@@ -7,6 +7,7 @@ import 'package:bloggios_app/features/authentication/view/bloc/register_otp_bloc
 import 'package:bloggios_app/features/authentication/view/bloc/user_auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 void main() async {
@@ -24,13 +25,14 @@ void main() async {
         ),
         BlocProvider(create: (_) => serviceLocator<RegisterOtpBloc>())
       ],
-      child: MyApp(),
+      child: MyApp(goRouter: initRouter()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GoRouter goRouter;
+  const MyApp({super.key, required this.goRouter});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
         title: 'Bloggios',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightThemeMode,
-        routerConfig: initRouter(),
+        routerConfig: goRouter,
       ),
     );
   }
