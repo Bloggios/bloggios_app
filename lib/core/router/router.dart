@@ -10,6 +10,7 @@ import 'package:bloggios_app/features/application/view/pages/home_page.dart';
 import 'package:bloggios_app/features/authentication/view/pages/authentication_page.dart';
 import 'package:bloggios_app/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:bloggios_app/features/onboarding/view/pages/splash_page.dart';
+import 'package:bloggios_app/features/utility/view/pages/server_unavailable_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -89,6 +90,27 @@ GoRouter initRouter() {
           return CustomTransitionPage(
             key: state.pageKey,
             child: const HomePage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.serverUnavailable.path,
+        name: Routes.serverUnavailable.name,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const ServerUnavailablePage(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               const begin = Offset(1.0, 0.0);
               const end = Offset.zero;

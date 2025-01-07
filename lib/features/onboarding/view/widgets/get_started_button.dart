@@ -5,9 +5,11 @@
   File: get_started_button
  */
 
+import 'package:bloggios_app/core/beans/init_dependencies.dart';
 import 'package:bloggios_app/core/router/routes.dart';
 import 'package:bloggios_app/core/storage/secured_storage.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
+import 'package:bloggios_app/features/authentication/view/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,6 +24,7 @@ class _GetStartedButtonState extends State<GetStartedButton> with SingleTickerPr
   late AnimationController _controller;
   late Animation<double> _positionAnimation;
   late Animation<double> _opacityAnimation;
+  final authBloc = serviceLocator<AuthBloc>();
 
   @override
   void initState() {
@@ -48,6 +51,17 @@ class _GetStartedButtonState extends State<GetStartedButton> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+
+    void onPressed() {
+      SecuredStorage.storeIsOnboardingVisited();
+      final authState = authBloc.state;
+      if (authState is AuthSuccess) {
+        context.pushReplacement(Routes.homePage.path);
+      } else {
+        context.pushReplacement(Routes.authentication.path);
+      }
+    }
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppPallete.accentColor,
@@ -57,10 +71,7 @@ class _GetStartedButtonState extends State<GetStartedButton> with SingleTickerPr
         ),
         enableFeedback: true
       ),
-      onPressed: () {
-        SecuredStorage.storeIsOnboardingVisited();
-        context.pushReplacement(Routes.authentication.path);
-      },
+      onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

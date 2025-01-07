@@ -5,9 +5,8 @@
   File: splash_page
  */
 
-import 'package:bloggios_app/core/router/routes.dart';
-import 'package:bloggios_app/core/storage/secured_storage.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
+import 'package:bloggios_app/features/onboarding/utils/splash_logics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -82,8 +81,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     );
 
     _textSlideAnimation = Tween<Offset>(
-      begin: Offset(0, 2), // Start 160px below
-      end: Offset(0, 0), // End at normal position
+      begin: Offset(0, 2),
+      end: Offset(0, 0),
     ).animate(
       CurvedAnimation(
         parent: _textAnimationController,
@@ -102,7 +101,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   }
 
   Future<void> initTasks() async {
-    final apiFetch = initLogics().whenComplete(() {
+    final apiFetch = initSplashLogics().whenComplete(() {
       setState(() {
         _isApiFetched = true;
       });
@@ -125,19 +124,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         context.pushReplacement(path);
       }
     }
-  }
-
-  Future<String> initLogics() async {
-    final routePath = await determineInitialRoute();
-    return routePath;
-  }
-
-  Future<String> determineInitialRoute() async {
-    final isOnboardingVisited = await SecuredStorage.retrieveIsOnboardingVisited();
-    if (isOnboardingVisited != null && isOnboardingVisited == 'true') {
-      return Routes.authentication.path;
-    }
-    return Routes.onboarding.path;
   }
 
   Future<void> initAnimations() async {

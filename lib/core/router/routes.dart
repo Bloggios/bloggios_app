@@ -12,4 +12,5 @@ class Routes {
   static AppRoute onboarding = AppRoute(name: 'onboarding', path: '/onboarding');
   static AppRoute authentication = AppRoute(name: 'authentication', path: '/authentication');
   static AppRoute homePage = AppRoute(name: 'home', path: '/home');
+  static AppRoute serverUnavailable = AppRoute(name: 'serverUnavailable', path: '/server-unavailable');
 }

@@ -28,6 +28,10 @@ class SecuredStorage {
     return await _secureStorage.read(key: StorageConstants.isOnboardingVisited);
   }
 
+  static Future<void> deleteIsOnboardingVisited() async {
+    await _secureStorage.delete(key: StorageConstants.isOnboardingVisited);
+  }
+
   static Future<void> storeRefreshToken(
     String refreshToken,
     AuthResponse authResponse,

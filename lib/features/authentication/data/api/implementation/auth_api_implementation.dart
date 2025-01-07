@@ -8,6 +8,7 @@
 import 'dart:convert';
 
 import 'package:bloggios_app/core/constants/api_constants.dart';
+import 'package:bloggios_app/core/constants/application_constants.dart';
 import 'package:bloggios_app/core/exception/bloggios_exception.dart';
 import 'package:bloggios_app/core/models/auth_response.dart';
 import 'package:bloggios_app/core/storage/secured_storage.dart';
@@ -111,7 +112,7 @@ class AuthApiImplementation implements AuthApi {
       throw BloggiosException(message: exception.message, code: exception.code);
     } catch (exception) {
       throw BloggiosException(
-          message: 'Server Error', code: 'SOCKET_EXCEPTION');
+          message: 'Server Error', code: ApplicationConstants.socketException);
     }
   }
 }
