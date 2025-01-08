@@ -5,6 +5,7 @@
   File: splash_page
  */
 
+import 'package:bloggios_app/core/constants/assets_constants.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:bloggios_app/features/onboarding/utils/splash_logics.dart';
 import 'package:flutter/material.dart';
@@ -197,7 +198,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         child: ScaleTransition(
                           scale: _zoomAnimation,
                           child: Image.asset(
-                            'assets/images/bloggios_logo_white.png',
+                            AssetsConstants.bloggiosWhiteLogo,
                             width: 140,
                           ),
                         ),
@@ -249,7 +250,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
               return Transform.rotate(
                 angle: _animation.value * (3.14159265359 / 180),
                 child: Image.asset(
-                  'assets/images/bloggios_logo_square-250.png',
+                  AssetsConstants.bloggiosRoundedSquareLogo,
                   width: 120,
                 ),
               );
