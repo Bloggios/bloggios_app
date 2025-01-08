@@ -9,4 +9,5 @@ class EnvConstants {
   static const String baseUrl = 'API_BASE_URL';
   static const String clientId = 'CLIENT_ID';
   static const String clientSecret = 'CLIENT_SECRET';
+  static const String refreshTokenName = 'REFRESH_TOKEN_COOKIE_NAME';
 }

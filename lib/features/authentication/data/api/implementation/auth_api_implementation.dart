@@ -8,16 +8,20 @@
 import 'dart:convert';
 
 import 'package:bloggios_app/core/constants/api_constants.dart';
-import 'package:bloggios_app/core/constants/application_constants.dart';
+import 'package:bloggios_app/core/constants/env_constants.dart';
 import 'package:bloggios_app/core/exception/bloggios_exception.dart';
 import 'package:bloggios_app/core/models/auth_response.dart';
 import 'package:bloggios_app/core/storage/secured_storage.dart';
 import 'package:bloggios_app/core/utils/cookie_utils.dart';
 import 'package:bloggios_app/features/authentication/data/api/auth_api.dart';
 import 'package:bloggios_app/features/authentication/utils/client_utils.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class AuthApiImplementation implements AuthApi {
+
+  static String refreshTokenName = dotenv.get(EnvConstants.refreshTokenName);
+
   @override
   Future<AuthResponse> authenticateUser(
       {required String email, required String password}) async {
@@ -84,11 +88,12 @@ class AuthApiImplementation implements AuthApi {
     }
     final refreshTokenApi = ApiConstants.refreshToken;
     Uri url = Uri.parse(refreshTokenApi.path);
-    final refreshTokenCookie = 'local-refresh-token__mgmt=$refreshToken';
+    final refreshTokenCookie = '$refreshTokenName=$refreshToken';
     Map<String, String> headers = {'Cookie': refreshTokenCookie};
 
     try {
       final response = await http.get(url, headers: headers);
+
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
       if (response.statusCode == refreshTokenApi.successCode) {
@@ -111,8 +116,7 @@ class AuthApiImplementation implements AuthApi {
       await SecuredStorage.deleteRefreshToken();
       throw BloggiosException(message: exception.message, code: exception.code);
     } catch (exception) {
-      throw BloggiosException(
-          message: 'Server Error', code: ApplicationConstants.socketException);
+      throw BloggiosException();
     }
   }
 }
