@@ -161,3 +161,83 @@ class _TestPageState extends State<TestPage> with SingleTickerProviderStateMixin
     );
   }
 }
+
+// Widget _fadeInDataWidget() {
+//   Widget content;
+//
+//   if (_selectedIndex == 0) {
+//     content = Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       key: ValueKey('Matrimony'),
+//       children: [
+//         Text(
+//           'Matrimony Feature 1',
+//           style: TextStyle(
+//             fontSize: 20,
+//             color: Colors.black87,
+//             fontWeight: FontWeight.w600,
+//           ),
+//         ),
+//         SizedBox(height: 10),
+//         Text(
+//           'Matrimony Feature 2',
+//           style: TextStyle(
+//             fontSize: 18,
+//             color: Colors.black54,
+//             fontWeight: FontWeight.w500,
+//           ),
+//         ),
+//       ],
+//     );
+//   } else if (_selectedIndex == 1) {
+//     content = Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       key: ValueKey('Dating'), // Unique key for smooth transition
+//       children: [
+//         Text(
+//           'Dating Feature 1',
+//           style: TextStyle(
+//             fontSize: 20,
+//             color: Colors.black87,
+//             fontWeight: FontWeight.w600,
+//           ),
+//         ),
+//         SizedBox(height: 10),
+//         Text(
+//           'Dating Feature 2',
+//           style: TextStyle(
+//             fontSize: 18,
+//             color: Colors.black54,
+//             fontWeight: FontWeight.w500,
+//           ),
+//         ),
+//       ],
+//     );
+//   } else {
+//     // None selected
+//     content = Column(
+//       key: ValueKey('None'), // Unique key for smooth transition
+//       children: [
+//         Text(
+//           'Please select a feature to proceed.',
+//           style: TextStyle(
+//             fontSize: 20,
+//             color: Colors.grey,
+//             fontWeight: FontWeight.w400,
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+//
+//   return AnimatedSwitcher(
+//     duration: Duration(milliseconds: 200), // Animation duration
+//     transitionBuilder: (Widget child, Animation<double> animation) {
+//       return FadeTransition(
+//         opacity: animation,
+//         child: child,
+//       );
+//     },
+//     child: content,
+//   );
+// }

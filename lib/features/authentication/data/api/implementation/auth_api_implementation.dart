@@ -8,6 +8,7 @@
 import 'dart:convert';
 
 import 'package:bloggios_app/core/constants/api_constants.dart';
+import 'package:bloggios_app/core/constants/application_constants.dart';
 import 'package:bloggios_app/core/constants/env_constants.dart';
 import 'package:bloggios_app/core/exception/bloggios_exception.dart';
 import 'package:bloggios_app/core/models/auth_response.dart';
@@ -19,7 +20,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class AuthApiImplementation implements AuthApi {
-
   static String refreshTokenName = dotenv.get(EnvConstants.refreshTokenName);
 
   @override
@@ -73,8 +73,7 @@ class AuthApiImplementation implements AuthApi {
       throw BloggiosException(message: exception.message, code: exception.code);
     } catch (exception) {
       throw BloggiosException(
-          message: 'Server Error', code: 'SOCKET_EXCEPTION'
-      );
+          message: 'Server Error', code: 'SOCKET_EXCEPTION');
     }
   }
 
@@ -83,8 +82,9 @@ class AuthApiImplementation implements AuthApi {
     String? refreshToken = await SecuredStorage.retrieveRefreshToken();
     if (refreshToken == null) {
       throw BloggiosException(
-          message: 'Not Refresh Token Present',
-          code: 'REFRESH_TOKEN_NOT_FOUND');
+        message: 'Not Refresh Token Present',
+        code: 'REFRESH_TOKEN_NOT_FOUND',
+      );
     }
     final refreshTokenApi = ApiConstants.refreshToken;
     Uri url = Uri.parse(refreshTokenApi.path);
@@ -93,7 +93,6 @@ class AuthApiImplementation implements AuthApi {
 
     try {
       final response = await http.get(url, headers: headers);
-
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
       if (response.statusCode == refreshTokenApi.successCode) {
@@ -116,7 +115,9 @@ class AuthApiImplementation implements AuthApi {
       await SecuredStorage.deleteRefreshToken();
       throw BloggiosException(message: exception.message, code: exception.code);
     } catch (exception) {
-      throw BloggiosException();
+      throw BloggiosException(
+          message: exception.toString(),
+          code: ApplicationConstants.socketException);
     }
   }
 }

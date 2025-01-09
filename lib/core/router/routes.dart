@@ -13,4 +13,7 @@ class Routes {
   static AppRoute authentication = AppRoute(name: 'authentication', path: '/authentication');
   static AppRoute homePage = AppRoute(name: 'home', path: '/home');
   static AppRoute serverUnavailable = AppRoute(name: 'serverUnavailable', path: '/server-unavailable');
+  static AppRoute profileOnboarding = AppRoute(name: 'profileOnboarding', path: '/profile-onboarding');
+  static AppRoute applicationPrimaryUsecase = AppRoute(name: 'applicationPrimaryUsecase', path: '/application-primary-usecase');
+  static AppRoute matrimonyOnboardingPage = AppRoute(name: 'matrimonyOnboarding', path: '/matrimony-onboarding');
 }

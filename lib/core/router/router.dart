@@ -10,13 +10,16 @@ import 'package:bloggios_app/features/application/view/pages/home_page.dart';
 import 'package:bloggios_app/features/authentication/view/pages/authentication_page.dart';
 import 'package:bloggios_app/features/onboarding/view/pages/onboarding_page.dart';
 import 'package:bloggios_app/features/onboarding/view/pages/splash_page.dart';
+import 'package:bloggios_app/features/user_onboarding/view/pages/application_primary_usecase.dart';
+import 'package:bloggios_app/features/user_onboarding/view/pages/matrimony_onboarding_page.dart';
+import 'package:bloggios_app/features/user_onboarding/view/pages/profile_onboarding_page.dart';
 import 'package:bloggios_app/features/utility/view/pages/server_unavailable_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter initRouter() {
   return GoRouter(
-    initialLocation: Routes.splash.path,
+    initialLocation: Routes.profileOnboarding.path,
     routes: [
       GoRoute(
         path: Routes.splash.path,
@@ -111,6 +114,69 @@ GoRouter initRouter() {
           return CustomTransitionPage(
             key: state.pageKey,
             child: const ServerUnavailablePage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.profileOnboarding.path,
+        name: Routes.profileOnboarding.name,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: ProfileOnboardingPage(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.applicationPrimaryUsecase.path,
+        name: Routes.applicationPrimaryUsecase.name,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const ApplicationPrimaryUsecase(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.matrimonyOnboardingPage.path,
+        name: Routes.matrimonyOnboardingPage.name,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const MatrimonyOnboardingPage(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               const begin = Offset(1.0, 0.0);
               const end = Offset.zero;
