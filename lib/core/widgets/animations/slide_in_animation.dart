@@ -35,8 +35,8 @@ class _SlideInAnimationState extends State<SlideInAnimation>
     );
 
     _slideAnimation = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Slide from right
-      end: Offset.zero, // Slide to center
+      begin: Offset(0.0, 1.0),
+      end: Offset.zero,
     ).animate(
       CurvedAnimation(
         parent: _controller,

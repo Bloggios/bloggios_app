@@ -147,12 +147,15 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
             chipLabels.length,
             (int index) {
               return ChoiceChip(
+                padding: EdgeInsets.all(10),
                 shape: const StadiumBorder(),
                 showCheckmark: false,
                 checkmarkColor: AppPallete.whiteColor,
                 label: Text(
                   chipLabels[index],
                   style: TextStyle(
+                    fontFamily: 'Nunito',
+
                       color: selectedChip == index
                           ? AppPallete.whiteColor
                           : Colors.black87),
