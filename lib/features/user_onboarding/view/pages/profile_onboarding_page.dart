@@ -9,7 +9,7 @@ import 'package:bloggios_app/core/router/routes.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:bloggios_app/core/utils/dimensions.dart';
 import 'package:bloggios_app/core/widgets/name_rules.dart';
-import 'package:bloggios_app/features/user_onboarding/view/widgets/user_onboarding_text_field.dart';
+import 'package:bloggios_app/core/widgets/basic_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -83,7 +83,7 @@ class _ProfileOnboardingPageState extends State<ProfileOnboardingPage> {
                           fontFamily: 'Nunito',
                         ),
                       ),
-                      UserOnboardingTextField(
+                      BasicTextField(
                         textEditingController: _firstNameEditingController,
                         label: 'First Name',
                         validator: (value) {
@@ -93,7 +93,7 @@ class _ProfileOnboardingPageState extends State<ProfileOnboardingPage> {
                           return null;
                         },
                       ),
-                      UserOnboardingTextField(
+                      BasicTextField(
                         textEditingController: _lastNameEditingController,
                         label: 'Last Name',
                       ),

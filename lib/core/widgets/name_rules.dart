@@ -8,7 +8,8 @@
 import 'package:flutter/material.dart';
 
 class NameRules extends StatelessWidget {
-  const NameRules({super.key});
+  final String? usecaseFor;
+  const NameRules({super.key, this.usecaseFor});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +21,24 @@ class NameRules extends StatelessWidget {
       "In the Matrimony application, your Last Name will always be visible, regardless of your settings."
     ];
 
+    final List<String> usecaseForNameNote = [
+      "First Name of your $usecaseFor is required and will be visible to all users on the Bloggios Matrimony application.",
+      "First Name and Last Name of your $usecaseFor must match with your ${usecaseFor}'s Government ID.",
+      "Last Name of your $usecaseFor is always visible, regardless of their choice"
+    ];
+
+    List<String> getNameNote() {
+      if (usecaseFor == null) {
+        return nameNote;
+      } else {
+        return usecaseForNameNote;
+      }
+    }
+
     return Column(
       spacing: 7,
       children: [
-        for (var item in nameNote)
+        for (var item in getNameNote())
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

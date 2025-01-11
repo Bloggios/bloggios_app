@@ -8,11 +8,11 @@
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
-InputDecoration authInputDecoration(
+InputDecoration BloggiosInputDecoration(
     BuildContext context, {
       required String label,
       required String hintText,
-      required IconData icon,
+      required IconData? icon,
       Widget? suffixIcon,
     }) {
   return InputDecoration(

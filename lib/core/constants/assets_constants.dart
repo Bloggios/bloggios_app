@@ -17,4 +17,6 @@ class AssetsConstants {
   static const String otpShieldLottie = 'assets/lottie/otp_shield.json';
 
   static const String bloggiosRoundedSquareLogo = 'assets/images/bloggios_logo_square-250.png';
+
+  static const String matrimonyLottie = 'assets/lottie/matrimony.json';
 }

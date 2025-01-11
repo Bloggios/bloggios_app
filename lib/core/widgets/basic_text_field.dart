@@ -8,12 +8,12 @@
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
-class UserOnboardingTextField extends StatelessWidget {
+class BasicTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String? Function(String?)? validator;
   final String label;
 
-  const UserOnboardingTextField({
+  const BasicTextField({
     super.key,
     required this.textEditingController,
     this.validator,

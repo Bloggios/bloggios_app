@@ -2,30 +2,43 @@
   Developer: Rohit Parihar
   Project: bloggios_app
   GitHub: github.com/rohit-zip
-  File: text_field
+  File: bloggios_text_field
  */
 
 import 'package:bloggios_app/core/widgets/input_decoration.dart';
 import 'package:flutter/material.dart';
 
-class AuthTextField extends StatelessWidget {
+class PrefixIconTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String? Function(String?)? validator;
-  const AuthTextField({super.key, required this.textEditingController, this.validator});
+  final String label;
+  final String hintText;
+  final IconData prefixIcon;
+  final Iterable<String>? autoFillHints;
+
+  const PrefixIconTextField({
+    super.key,
+    required this.textEditingController,
+    this.validator,
+    required this.label,
+    this.hintText = "",
+    required this.prefixIcon,
+    this.autoFillHints,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autofillHints: [AutofillHints.email],
+      autofillHints: autoFillHints,
       keyboardType: TextInputType.emailAddress,
       controller: textEditingController,
       textInputAction: TextInputAction.done,
       style: TextStyle(fontFamily: 'Nunito'),
       decoration: BloggiosInputDecoration(
         context,
-        label: 'Email or Username',
-        hintText: 'Enter email or username',
-        icon: Icons.account_circle_outlined,
+        label: label,
+        hintText: hintText,
+        icon: prefixIcon,
       ),
       validator: validator,
     );
