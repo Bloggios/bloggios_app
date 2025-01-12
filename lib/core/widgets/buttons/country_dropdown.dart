@@ -9,7 +9,6 @@ import 'dart:math';
 
 import 'package:bloggios_app/core/constants/list_constants.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
-import 'package:bloggios_app/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -78,10 +77,9 @@ class _CountryDropdownState extends State<CountryDropdown> {
                     Text(
                       'Select Country',
                       style: TextStyle(
-                        fontFamily: 'Nunito',
-                        fontSize: 16,
-                        color: Colors.black45
-                      ),
+                          fontFamily: 'Nunito',
+                          fontSize: 16,
+                          color: Colors.black45),
                     ),
                   ],
                 )
@@ -103,7 +101,11 @@ class _CountryDropdownState extends State<CountryDropdown> {
                 ),
           Transform.rotate(
             angle: pi / 2,
-            child: Icon(Icons.chevron_right, size: 24,),
+            child: Icon(
+              Icons.chevron_right,
+              size: 24,
+              color: AppPallete.accentColor,
+            ),
           )
         ],
       ),

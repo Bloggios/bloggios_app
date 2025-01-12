@@ -8,13 +8,16 @@
 import 'package:bloggios_app/core/constants/assets_constants.dart';
 import 'package:bloggios_app/core/constants/list_constants.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
-import 'package:bloggios_app/core/widgets/animations/slide_in_animation.dart';
-import 'package:bloggios_app/core/widgets/basic_text_field.dart';
-import 'package:bloggios_app/core/widgets/country_dropdown.dart';
+import 'package:bloggios_app/core/utils/init_snackbar.dart';
+import 'package:bloggios_app/core/widgets/buttons/country_dropdown.dart';
+import 'package:bloggios_app/core/widgets/buttons/outlined_dropdown.dart';
+import 'package:bloggios_app/core/widgets/fields/basic_text_field.dart';
+import 'package:bloggios_app/core/widgets/fields/date_picker.dart';
+import 'package:bloggios_app/core/widgets/fields/prefix_icon_text_field.dart';
 import 'package:bloggios_app/core/widgets/name_rules.dart';
-import 'package:bloggios_app/core/widgets/prefix_icon_text_field.dart';
 import 'package:bloggios_app/core/widgets/rules_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
@@ -31,14 +34,29 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
   final nameTextController = TextEditingController();
   final emailTextController = TextEditingController();
   bool _isDateOfBirthShown = false;
+  bool _isHeightShown = false;
+  bool _isCasteShown = false;
+  bool _isDisabilityShown = false;
+  bool _isDoshShown = false;
+  bool _isFewWordsShown = false;
+  int? _selectedPhysicalChip;
+  final ScrollController _scrollController = ScrollController();
+  final _fewWordsTextController = TextEditingController();
 
   final List<String> chipLabels = [
     "Myself",
     "Son",
     "Daughter",
     "Brother",
-    "Sister"
+    "Sister",
+    "For Exploring"
   ];
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +64,11 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppPallete.whiteColor,
       appBar: _appBar(context),
+      bottomNavigationBar: BottomAppBar(
+        child: _submitButton(),
+      ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: Column(
@@ -57,15 +79,7 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
                 height: 40,
               ),
               _profileFor(),
-              SizedBox(
-                height: 20,
-              ),
-              _countrySection(),
-              SizedBox(height: 20,),
-              SlideInAnimation(
-                  isShown: _isDateOfBirthShown,
-                  child: _countrySection()
-              )
+              _getProfileDetailsWidget(),
             ],
           ),
         ),
@@ -151,14 +165,15 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
                 shape: const StadiumBorder(),
                 showCheckmark: false,
                 checkmarkColor: AppPallete.whiteColor,
+                backgroundColor: AppPallete.whiteColor,
                 label: Text(
                   chipLabels[index],
                   style: TextStyle(
                     fontFamily: 'Nunito',
-
-                      color: selectedChip == index
-                          ? AppPallete.whiteColor
-                          : Colors.black87),
+                    color: selectedChip == index
+                        ? AppPallete.whiteColor
+                        : Colors.black87,
+                  ),
                 ),
                 selected: selectedChip == index,
                 selectedColor: AppPallete.accentColor,
@@ -187,12 +202,14 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
               child: child,
             );
           },
-          child: selectedChip != 0
+          child: selectedChip != 0 && selectedChip != chipLabels.length - 1
               ? Container(
                   key: ValueKey("visibleWidget"),
                   child: _userDetailsWidget(),
                 )
-              : SizedBox(key: ValueKey("hiddenWidget")), // Vacates space
+              : SizedBox(
+                  key: ValueKey("hiddenWidget"),
+                ), // Vacates space
         ),
       ],
     );
@@ -239,6 +256,46 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
     );
   }
 
+  Widget _getProfileDetailsWidget() {
+    if (selectedChip != chipLabels.length - 1) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 20,
+          ),
+          _countrySection(),
+          SizedBox(
+            height: 20,
+          ),
+          if (_isDateOfBirthShown) _dateOfBirth(),
+          SizedBox(
+            height: 20,
+          ),
+          if (_isHeightShown) _heightSection(),
+          SizedBox(
+            height: 20,
+          ),
+          if (_isCasteShown) _casteSection(),
+          SizedBox(
+            height: 20,
+          ),
+          if (_isDisabilityShown) _disabilityStatus(),
+          SizedBox(
+            height: 20,
+          ),
+          if (_isDoshShown) _doshSection(),
+          SizedBox(
+            height: 20,
+          ),
+          if (_isFewWordsShown) _fewWordsSection(),
+        ],
+      );
+    } else {
+      return SizedBox.shrink();
+    }
+  }
+
   Widget _countrySection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,12 +305,227 @@ class _MatrimonyOnboardingPageState extends State<MatrimonyOnboardingPage> {
             "Select your ${selectedChip == 0 ? "" : "${chipLabels[selectedChip]}'s "}Country"),
         CountryDropdown(
           onItemSelected: (value) {
+            setState(
+              () {
+                _isDateOfBirthShown = true;
+                _scrollToBottom();
+              },
+            );
+          },
+        )
+      ],
+    );
+  }
+
+  Widget _dateOfBirth() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10,
+      children: [
+        _questionText(
+            "Select your ${selectedChip == 0 ? "" : "${chipLabels[selectedChip]}'s "}Date of Birth"),
+        DatePicker(
+          hintText: 'Date of Birth',
+          initialDate: DateTime.now(),
+          minimumDate: DateTime(1970),
+          maximumDate: DateTime(2004),
+          onDateSelected: (value) {
             setState(() {
-              _isDateOfBirthShown = true;
+              _isHeightShown = true;
+              _scrollToBottom();
             });
           },
         )
       ],
+    );
+  }
+
+  Widget _heightSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10,
+      children: [
+        _questionText(
+            "Select your ${selectedChip == 0 ? "" : "${chipLabels[selectedChip]}'s "}Height"),
+        OutlinedDropdown(
+          hintText: 'Height (in ft)',
+          items: ListConstants.height,
+          onItemSelected: (value) {
+            setState(
+              () {
+                _isCasteShown = true;
+                _scrollToBottom();
+              },
+            );
+          },
+        )
+      ],
+    );
+  }
+
+  Widget _casteSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10,
+      children: [
+        Divider(),
+        _questionText("Religion"),
+        Column(
+          spacing: 10,
+          children: [
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                minimumSize: Size(double.infinity, 0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                side: BorderSide(color: Colors.grey.shade400),
+              ),
+              onPressed: () {
+                initSnackBar(context,
+                    'Bloggios currently supports matrimonial services exclusively for the Hindu community.');
+              },
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Hindu',
+                  style: TextStyle(
+                    fontFamily: 'Nunito',
+                    fontSize: 16,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
+            OutlinedDropdown(
+              items: ListConstants.castes,
+              hintText: "Select Caste",
+              onItemSelected: (value) {
+                setState(
+                  () {
+                    _isDisabilityShown = true;
+                    _scrollToBottom();
+                  },
+                );
+              },
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _disabilityStatus() {
+    final List<String> disabilityChips = ListConstants.disabilityStatus;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 16,
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: _questionText(selectedChip == 0
+              ? "Do you have any disability ?"
+              : "Do your ${chipLabels[selectedChip]} have any disability ?"),
+        ),
+        Wrap(
+          spacing: 7.0,
+          children: List<Widget>.generate(
+            disabilityChips.length,
+            (int index) {
+              return ChoiceChip(
+                padding: EdgeInsets.all(10),
+                shape: const StadiumBorder(),
+                showCheckmark: false,
+                backgroundColor: AppPallete.whiteColor,
+                label: Text(
+                  disabilityChips[index],
+                  style: TextStyle(
+                    fontFamily: 'Nunito',
+                    color: _selectedPhysicalChip == index
+                        ? AppPallete.whiteColor
+                        : Colors.black87,
+                  ),
+                ),
+                selected: _selectedPhysicalChip == index,
+                selectedColor: AppPallete.accentColor,
+                onSelected: (bool selected) {
+                  setState(() {
+                    _selectedPhysicalChip = index;
+                    _isDoshShown = true;
+                    _scrollToBottom();
+                  });
+                },
+              );
+            },
+          ).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _doshSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10,
+      children: [
+        _questionText(selectedChip == 0
+            ? "Do you have any Dosh ?"
+            : "Do your ${chipLabels[selectedChip]} have any Dosh ?"),
+        OutlinedDropdown(
+          hintText: 'Select Dosh',
+          items: ListConstants.doshType,
+          onItemSelected: (value) {
+            setState(
+              () {
+                _isFewWordsShown = true;
+                _scrollToBottom();
+              },
+            );
+          },
+        )
+      ],
+    );
+  }
+
+  Widget _fewWordsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10,
+      children: [
+        _questionText(selectedChip == 0
+            ? "Few words about you"
+            : "Few words about your ${chipLabels[selectedChip]}"),
+        BasicTextField(
+          textEditingController: _fewWordsTextController,
+          hintText: selectedChip == 0
+              ? "Describe about yourself in few words"
+              : "Describe about your ${chipLabels[selectedChip]} in few words",
+          maxLines: 4,
+          keyboardType: TextInputType.multiline,
+        )
+      ],
+    );
+  }
+
+  Widget _submitButton() {
+    return ElevatedButton(
+      onPressed: () => HapticFeedback.lightImpact(),
+      style: ElevatedButton.styleFrom(
+          minimumSize: Size(double.infinity, 47),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: AppPallete.accentColor),
+      child: Text(
+        'Submit',
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'Nunito',
+          fontSize: 16,
+          letterSpacing: 1,
+        ),
+      ),
     );
   }
 }

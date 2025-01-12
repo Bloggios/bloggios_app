@@ -6,8 +6,10 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void initSnackBar(BuildContext buildContext, String message) {
+  HapticFeedback.selectionClick();
   ScaffoldMessenger.of(buildContext)
     ..hideCurrentSnackBar()
     ..showSnackBar(

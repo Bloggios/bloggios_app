@@ -5,6 +5,8 @@
   File: list_constants
  */
 
+import 'dart:core';
+
 import 'package:icons_plus/icons_plus.dart';
 
 class ListConstants {
@@ -18,7 +20,7 @@ class ListConstants {
     ];
   }
 
-  static List<CountryPayload> countries = [
+  static final List<CountryPayload> countries = [
     CountryPayload(name: 'India', flag: Flags.india),
     CountryPayload(name: 'USA', flag: Flags.united_states_of_america),
     CountryPayload(name: 'UK', flag: Flags.united_kingdom),
@@ -27,6 +29,87 @@ class ListConstants {
     CountryPayload(name: 'China', flag: Flags.china),
     CountryPayload(name: 'Nepal', flag: Flags.nepal),
     CountryPayload(name: 'UAE', flag: Flags.united_arab_emirates),
+  ];
+
+  static final List<String> height = [
+    "4' 4\" (132 cm)",
+    "4' 5\" (135 cm)",
+    "4' 6\" (137 cm)",
+    "4' 7\" (140 cm)",
+    "4' 8\" (142 cm)",
+    "4' 9\" (145 cm)",
+    "4' 10\" (147 cm)",
+    "4' 11\" (150 cm)",
+    "5' 0\" (152 cm)",
+    "5' 1\" (155 cm)",
+    "5' 2\" (157 cm)",
+    "5' 3\" (160 cm)",
+    "5' 4\" (163 cm)",
+    "5' 5\" (165 cm)",
+    "5' 6\" (168 cm)",
+    "5' 7\" (170 cm)",
+    "5' 8\" (173 cm)",
+    "5' 9\" (175 cm)",
+    "5' 10\" (178 cm)",
+    "5' 11\" (180 cm)",
+    "6' 0\" (183 cm)",
+    "6' 1\" (185 cm)",
+    "6' 2\" (188 cm)",
+    "6' 3\" (191 cm)",
+    "6' 4\" (193 cm)",
+    "6' 5\" (196 cm)",
+    "6' 6\" (198 cm)",
+    "6' 7\" (201 cm)",
+    "6' 8\" (203 cm)",
+    "6' 9\" (206 cm)",
+    "6' 10\" (208 cm)",
+    "6' 11\" (211 cm)",
+  ];
+
+  static final List<String> doshType = [
+    "Don't have any Dosh",
+    "Don't know about it",
+    "Manglik",
+    "Sarpa Dosham",
+    "Kethu Dosham",
+    "Kalathra Dosham",
+    "Rahu Dosham",
+    "Kala Sarpa Dosham"
+  ];
+
+  static final List<String> castes = [
+    "I do not wish to specify",
+    "Brahmin",
+    "Ghanchi - Marwari",
+    "Modi - Gujrati",
+    "Chaudhary - Marwari",
+    "Chaurasia",
+    "Deshmukh",
+    "Garhwali",
+    "Mali - Marwari",
+    "Gondhali",
+    "Gujjar",
+    "Sindhi",
+    "Suthar",
+    "Vaishnav",
+    "Naik",
+    "Nair",
+    "Panchal",
+    "Parsi",
+    "Patil",
+    "Prajapati",
+    "Rabari",
+    "Sahu",
+    "Shaw / Teli",
+    "Khatri",
+    "Other"
+  ];
+
+  static final List<String> disabilityStatus = [
+    "No Disability",
+    "Physical Disability",
+    "Other Disability",
+    "Not wish to Specify"
   ];
 }
 

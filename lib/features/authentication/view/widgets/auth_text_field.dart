@@ -5,7 +5,7 @@
   File: text_field
  */
 
-import 'package:bloggios_app/core/widgets/input_decoration.dart';
+import 'package:bloggios_app/core/widgets/fields/input_decoration.dart';
 import 'package:flutter/material.dart';
 
 class AuthTextField extends StatelessWidget {

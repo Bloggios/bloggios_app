@@ -9,6 +9,7 @@ import 'package:bloggios_app/core/beans/init_dependencies.dart';
 import 'package:bloggios_app/core/constants/application_constants.dart';
 import 'package:bloggios_app/core/exception/bloggios_exception.dart';
 import 'package:bloggios_app/core/models/auth_response.dart';
+import 'package:bloggios_app/core/rest/profile_controller.dart';
 import 'package:bloggios_app/core/router/routes.dart';
 import 'package:bloggios_app/core/storage/secured_storage.dart';
 import 'package:bloggios_app/features/authentication/data/api/implementation/auth_api_implementation.dart';
@@ -25,7 +26,18 @@ Future<String> initSplashLogics() async {
       try {
         AuthResponse authResponse = await authApi.refreshToken();
         authBloc.add(AuthRefreshTokenUpdate(authResponse));
-        return Routes.homePage.path;
+        final profileController = ProfileController();
+
+        try {
+          final profileResponse = await profileController.getProfile();
+          return Routes.homePage.path;
+        } on BloggiosException catch (exception) {
+          if (exception.code == 'AUTH--1063') {
+            return Routes.profileOnboarding.path;
+          } else {
+            return Routes.serverUnavailable.path;
+          }
+        }
       } on BloggiosException catch (exception) {
         if (exception.code == ApplicationConstants.socketException) {
           return Routes.serverUnavailable.path;

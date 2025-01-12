@@ -11,13 +11,19 @@ import 'package:flutter/material.dart';
 class BasicTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String? Function(String?)? validator;
-  final String label;
+  final String? label;
+  final TextInputType keyboardType;
+  final int? maxLines;
+  final String? hintText;
 
   const BasicTextField({
     super.key,
     required this.textEditingController,
     this.validator,
-    required this.label,
+    this.label,
+    this.keyboardType = TextInputType.text,
+    this.maxLines,
+    this.hintText
   });
 
   @override
@@ -30,13 +36,15 @@ class BasicTextField extends StatelessWidget {
         AutofillHints.nickname
       ],
       validator: validator,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
       controller: textEditingController,
       textInputAction: TextInputAction.done,
       style: TextStyle(fontFamily: 'Nunito'),
       decoration: InputDecoration(
         errorStyle: const TextStyle(color: Colors.redAccent),
         labelText: label,
+        hintText: hintText,
         hintStyle: const TextStyle(color: Colors.black38),
         labelStyle: const TextStyle(color: Colors.grey),
         floatingLabelStyle: MaterialStateTextStyle.resolveWith((states) {

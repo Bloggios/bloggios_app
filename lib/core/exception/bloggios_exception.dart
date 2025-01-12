@@ -5,7 +5,7 @@
   File: bloggios_exception.dart
  */
 
-class BloggiosException {
+class BloggiosException implements Exception {
   final String message;
   final String code;
 
@@ -13,4 +13,11 @@ class BloggiosException {
     this.message = 'An Unexpected error occurred',
     this.code = 'UNKNOWN 500',
   });
+
+  factory BloggiosException.fromJson(Map<String, dynamic> json) {
+    return BloggiosException(
+      message: json['message'] ?? 'An Unexpected error occurred',
+      code: json['code'] ?? 'UNKNOWN 500',
+    );
+  }
 }

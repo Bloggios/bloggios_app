@@ -149,6 +149,12 @@ class ExceptionCodeService {
     const ExceptionInfo('AUTH--1059', 'AUTH--1059', 'User is not logged in');
     _exceptionDetails['AUTH--1060'] = const ExceptionInfo(
         'AUTH--1060', 'AUTH--1060', 'Profile is required to init Matrimony');
+    _exceptionDetails['AUTH--1061'] = const ExceptionInfo(
+        'AUTH--1061', 'AUTH--1061', 'Last Name is too long');
+    _exceptionDetails['AUTH--1062'] = const ExceptionInfo(
+        'AUTH--1062', 'AUTH--1062', 'You cannot add more than one word in Last Name');
+    _exceptionDetails['AUTH--1063'] = const ExceptionInfo(
+        'AUTH--1063', 'AUTH--1063', 'Profile not found with User Id');
     _exceptionDetails['SOCKET_EXCEPTION'] = const ExceptionInfo(
         'SOCKET_EXCEPTION', 'Server Unavailable', 'Backend Servers are currently under maintenance or unavailable.');
   }

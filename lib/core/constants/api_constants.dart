@@ -13,6 +13,7 @@ class ApiConstants {
   static String baseUrl = dotenv.get(EnvConstants.baseUrl);
   static String userAuthController = '$baseUrl/auth-service/user-auth';
   static String authController = '$baseUrl/auth-service/auth';
+  static String profileController = '/profile-service';
 
   static ApiInfo authenticate = ApiInfo(
     '$authController/authenticate',
@@ -32,5 +33,10 @@ class ApiConstants {
   static ApiInfo authenticateOtp = ApiInfo(
     '$userAuthController/authenticate-otp',
     202,
+  );
+
+  static ApiInfo getProfile = ApiInfo(
+    '/profile-service/profile',
+    200,
   );
 }

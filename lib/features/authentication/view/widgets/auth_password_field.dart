@@ -5,7 +5,7 @@
   File: auth_password_field
  */
 
-import 'package:bloggios_app/core/widgets/input_decoration.dart';
+import 'package:bloggios_app/core/widgets/fields/input_decoration.dart';
 import 'package:bloggios_app/features/authentication/utils/auth_validators.dart';
 import 'package:flutter/material.dart';
 

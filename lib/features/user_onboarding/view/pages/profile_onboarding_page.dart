@@ -8,8 +8,8 @@
 import 'package:bloggios_app/core/router/routes.dart';
 import 'package:bloggios_app/core/theme/app_pallete.dart';
 import 'package:bloggios_app/core/utils/dimensions.dart';
+import 'package:bloggios_app/core/widgets/fields/basic_text_field.dart';
 import 'package:bloggios_app/core/widgets/name_rules.dart';
-import 'package:bloggios_app/core/widgets/basic_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

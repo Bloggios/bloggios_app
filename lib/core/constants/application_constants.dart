@@ -8,4 +8,5 @@
 class ApplicationConstants {
   static const double maxWidth = 400;
   static const String socketException = 'SOCKET_EXCEPTION';
+  static const String timeoutException = 'TIMEOUT_EXCEPTION';
 }

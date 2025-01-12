@@ -19,7 +19,7 @@ import 'package:go_router/go_router.dart';
 
 GoRouter initRouter() {
   return GoRouter(
-    initialLocation: Routes.profileOnboarding.path,
+    initialLocation: Routes.splash.path,
     routes: [
       GoRoute(
         path: Routes.splash.path,

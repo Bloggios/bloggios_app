@@ -38,20 +38,18 @@ android {
 
     signingConfigs {
         release {
-            keyAlias = 'Bloggios'
-            keyPassword = 'Qwerty@bloggios@99825'
-            storeFile = file("/home/runner/work/bloggios_app/bloggios_app/upload-keystore.jks")
-            storePassword = 'Qwerty@bloggios@99825'
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword = keystoreProperties['storePassword']
         }
     }
-
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Signing with the debug keys for now,
+            // so `flutter run --release` works.
             signingConfig = signingConfigs.release
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

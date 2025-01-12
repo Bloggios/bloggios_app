@@ -1,5 +1,4 @@
 import 'package:bloggios_app/core/beans/init_dependencies.dart';
-import 'package:bloggios_app/core/router/router.dart';
 import 'package:bloggios_app/core/theme/theme.dart';
 import 'package:bloggios_app/core/utils/init_app.dart';
 import 'package:bloggios_app/features/authentication/view/bloc/auth_bloc.dart';
@@ -12,7 +11,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 
 void main() async {
 
-  await initApp();
+  final router = await initApp();
 
   runApp(
     MultiBlocProvider(
@@ -25,7 +24,7 @@ void main() async {
         ),
         BlocProvider(create: (_) => serviceLocator<RegisterOtpBloc>())
       ],
-      child: MyApp(goRouter: initRouter()),
+      child: MyApp(goRouter: router),
     ),
   );
 }
