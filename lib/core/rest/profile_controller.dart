@@ -6,45 +6,39 @@
  */
 
 import 'package:bloggios_app/core/constants/api_constants.dart';
-import 'package:bloggios_app/core/constants/application_constants.dart';
 import 'package:bloggios_app/core/dio/init_dio.dart';
-import 'package:bloggios_app/core/exception/bloggios_exception.dart';
 import 'package:bloggios_app/core/models/api_info.dart';
 import 'package:bloggios_app/core/models/profile_response.dart';
+import 'package:bloggios_app/core/utils/dio_util.dart';
 import 'package:dio/dio.dart';
 
 class ProfileController {
   Future<ProfileResponse> getProfile() async {
     final ApiInfo getProfile = ApiConstants.getProfile;
 
-    try {
-      final response = await bloggiosDio.get(getProfile.path);
+    return await initApi(
+      () => bloggiosDio.get(getProfile.path),
+      (data) => ProfileResponse.fromJson(data),
+      getProfile,
+    );
+  }
 
-      if (response.statusCode == getProfile.successCode) {
-        return ProfileResponse.fromJson(response.data);
-      } else {
-        return throw BloggiosException.fromJson(response.data);
-      }
-    } on DioException catch (dioException) {
-      if (dioException.type == DioExceptionType.connectionTimeout ||
-          dioException.type == DioExceptionType.receiveTimeout ||
-          dioException.type == DioExceptionType.connectionError ||
-          dioException.type == DioExceptionType.sendTimeout) {
-        throw BloggiosException(
-            message: 'Server Error',
-            code: ApplicationConstants.timeoutException);
-      } else if (dioException.type == DioExceptionType.badResponse) {
-        throw BloggiosException.fromJson(dioException.response!.data);
-      } else {
-        print('Dio Exception');
-        throw BloggiosException(
-            message: 'Server Error',
-            code: ApplicationConstants.socketException);
-      }
-    } catch (exception) {
-      print('Exception');
-      throw BloggiosException(
-          message: 'Server Error', code: ApplicationConstants.socketException);
-    }
+  Future<ProfileResponse> addProfileInitial(
+      String firstName, String? lastName) async {
+    final ApiInfo addProfile = ApiConstants.addProfile;
+    final Map<String, dynamic> requestBody = {
+      "firstName": firstName,
+      if (lastName != null) "lastName": lastName,
+    };
+
+    return await initApi(
+      () => bloggiosDio.post(
+        addProfile.path,
+        data: requestBody,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      ),
+      (data) => ProfileResponse.fromJson(data),
+      addProfile,
+    );
   }
 }

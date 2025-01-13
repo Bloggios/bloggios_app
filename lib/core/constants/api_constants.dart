@@ -39,4 +39,9 @@ class ApiConstants {
     '/profile-service/profile',
     200,
   );
+
+  static ApiInfo addProfile = ApiInfo(
+    '/profile-service/profile',
+    201,
+  );
 }

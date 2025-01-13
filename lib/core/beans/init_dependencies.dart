@@ -6,6 +6,7 @@
  */
 
 import 'package:bloggios_app/core/exception/exception_code_service.dart';
+import 'package:bloggios_app/core/rest/profile_controller.dart';
 import 'package:bloggios_app/features/authentication/data/api/auth_api.dart';
 import 'package:bloggios_app/features/authentication/data/api/implementation/auth_api_implementation.dart';
 import 'package:bloggios_app/features/authentication/data/api/implementation/user_auth_api_implementation.dart';
@@ -21,6 +22,8 @@ import 'package:bloggios_app/features/authentication/domain/usecase/register_use
 import 'package:bloggios_app/features/authentication/view/bloc/auth_bloc.dart';
 import 'package:bloggios_app/features/authentication/view/bloc/register_otp_bloc.dart';
 import 'package:bloggios_app/features/authentication/view/bloc/user_auth_bloc.dart';
+import 'package:bloggios_app/features/user_onboarding/usecase/add_profile.dart';
+import 'package:bloggios_app/features/user_onboarding/view/bloc/profile_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
@@ -32,6 +35,7 @@ Future<void> initDependencies() async {
   _initUserAuth();
   _initAuth();
   _initExceptionCodes();
+  _initProfileBloc();
 }
 
 void _initSecuredStorage() {
@@ -108,5 +112,23 @@ void _initRegisterOtp() {
 void _initExceptionCodes() {
   serviceLocator.registerLazySingleton<ExceptionCodeService>(
     () => ExceptionCodeService(),
+  );
+}
+
+void _initProfileBloc() {
+  serviceLocator.registerFactory<ProfileController>(
+        () => ProfileController(),
+  );
+
+  serviceLocator.registerFactory(
+        () => AddProfile(
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton(
+        () => ProfileBloc(
+      addProfile: serviceLocator(),
+    ),
   );
 }

@@ -4,13 +4,13 @@ import 'package:bloggios_app/core/utils/init_app.dart';
 import 'package:bloggios_app/features/authentication/view/bloc/auth_bloc.dart';
 import 'package:bloggios_app/features/authentication/view/bloc/register_otp_bloc.dart';
 import 'package:bloggios_app/features/authentication/view/bloc/user_auth_bloc.dart';
+import 'package:bloggios_app/features/user_onboarding/view/bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 void main() async {
-
   final router = await initApp();
 
   runApp(
@@ -22,7 +22,12 @@ void main() async {
         BlocProvider(
           create: (_) => serviceLocator<UserAuthBloc>(),
         ),
-        BlocProvider(create: (_) => serviceLocator<RegisterOtpBloc>())
+        BlocProvider(
+          create: (_) => serviceLocator<RegisterOtpBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => serviceLocator<ProfileBloc>(),
+        ),
       ],
       child: MyApp(goRouter: router),
     ),
@@ -31,6 +36,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final GoRouter goRouter;
+
   const MyApp({super.key, required this.goRouter});
 
   @override
